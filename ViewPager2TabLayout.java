@@ -41,3 +41,4 @@ private class SwipeView extends RecyclerView.Adapter<SwipeView.ViewHolder> {
             
         }
     }
+viewPager2.setAdapter(new SwipeView());
