@@ -1,0 +1,102 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionName "1"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    // To install and run signed APK in device
+    signingConfigs {
+        appfavor {
+            storeFile file("../KeyStore File/Android/keystorefile")
+            keyAlias "key0"
+            storePassword "123"
+            keyPassword "123"
+        }
+    }
+    // End To install and run signed APK in device
+
+    flavorDimensions "version"
+
+    productFlavors {
+        appfavor {
+            dimension "version"
+            applicationId "in.appfavor.app"
+            versionCode 1
+            resValue "string", "flavored_app_name", "APP"
+            resValue "string", "flavored_splash_icon", "@drawable/logo"
+            resValue "dimen", "flavored_layout_width", "110dp"
+            resValue "dimen", "flavored_layout_height", "30dp"
+            buildConfigField "String", "URL", "\"https://www.google.com/\"";
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            resValue "string", "flavored_authorities_name", "\"${applicationId}.fileprovider\""
+            def AUTHORITY = ".fileprovider"
+            buildConfigField "String", "FLAVOURED_AUTHORITIES", "\"" + applicationId + AUTHORITY + "\"";
+            def flavorName = variant.flavorName
+            def buildType = variant.buildType.name
+            outputFileName = "${flavorName}-${buildType}.apk"
+        }
+    }
+
+    buildTypes {
+        debug {
+            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
+        }
+        release {
+            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")
+            productFlavors.appfavor.signingConfig signingConfigs.appfavor
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    //noinspection GradleCompatible
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.okio:okio:1.13.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'gun0912.ted:tedpermission:2.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+    implementation 'com.google.android.play:core:1.6.4'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation "androidx.browser:browser:1.3.0"
+    implementation 'com.comapi:foundation:1.2.0'
+    implementation('io.jsonwebtoken:jjwt:0.9.1')
+    //implementation ('com.google.android.gms:play-services-base:15.0.1') {force = true}
+    implementation 'androidx.multidex:multidex:2.0.1'
+}
+
+apply plugin: 'com.google.gms.google-services'
