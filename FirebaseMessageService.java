@@ -137,6 +137,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
 
 }
 
+params = new Bundle();
 mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 FirebaseApp.initializeApp(this);
  String dateStr = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
