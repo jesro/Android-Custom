@@ -42,3 +42,4 @@ private class SwipeView extends RecyclerView.Adapter<SwipeView.ViewHolder> {
         }
     }
 viewPager2.setAdapter(new SwipeView());
+new TabLayoutMediator(tabLayout, viewPager2,true, ((tab, position) -> {})).attach();
